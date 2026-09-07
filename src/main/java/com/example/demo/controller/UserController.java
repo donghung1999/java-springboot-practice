@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.dto.UserLoginDTO;
+import com.example.demo.dto.UserRegisterDTO;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public UserDTO registerUsers(@RequestBody UserLoginDTO userDTO) {
+    public UserDTO registerUsers(@RequestBody UserRegisterDTO userDTO) {
         return this.userService.register(userDTO);
     }
 }

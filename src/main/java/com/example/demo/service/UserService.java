@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.dto.UserLoginDTO;
+import com.example.demo.dto.UserRegisterDTO;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public UserDTO register(UserLoginDTO userDTO) {
+    public UserDTO register(UserRegisterDTO userDTO) {
         if (this.userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
