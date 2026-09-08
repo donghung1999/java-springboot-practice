@@ -13,3 +13,6 @@ springdoc:
     path: /swagger
   api-docs:
     path: /api-docs
+jwt:
+  secret: Doif7pIHt6kw/BaEKxjM6jStc+ilONDJy5y5MTMMsk8=
+  expiration: 900000
