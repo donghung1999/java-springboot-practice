@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.security.IpWhitelistFilter;
 import com.example.demo.security.JwtAuthenticationFilter;
 import com.example.demo.security.RateLimitFilter;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final RateLimitFilter rateLimitFilter;
+    private final IpWhitelistFilter ipWhitelistFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, RateLimitFilter rateLimitFilter) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, RateLimitFilter rateLimitFilter, IpWhitelistFilter ipWhitelistFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.rateLimitFilter = rateLimitFilter;
+        this.ipWhitelistFilter = ipWhitelistFilter;
     }
 
     @Bean
@@ -52,8 +55,13 @@ public class SecurityConfig {
             )
 
             .addFilterBefore(
-                this.rateLimitFilter,
+                this.ipWhitelistFilter,
                 UsernamePasswordAuthenticationFilter.class
+            )
+
+            .addFilterBefore(
+                this.rateLimitFilter,
+                IpWhitelistFilter.class
             )
 
             .addFilterAfter(
