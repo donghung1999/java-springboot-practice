@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.RedisService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,10 +24,12 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final RedisService redisService;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository, RedisService redisService) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        this.redisService = redisService;
     }
 
     @Override
@@ -38,8 +41,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String username;
+        if (this.redisService.isBlacklistedToken(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
+        String username;
         try {
             username = jwtService.extractUsername(token);
         } catch (Exception e) {
@@ -58,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         null,
                         List.of(
                             new SimpleGrantedAuthority(
-                                    "ROLE_" + user.getRole().getName()
+                                "ROLE_" + user.getRole().getName()
                             )
                         )
                     );

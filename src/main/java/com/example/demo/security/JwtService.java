@@ -60,4 +60,9 @@ public class JwtService {
         String username = extractUsername(token);
         return username.equals(user.getUsername()) && !isTokenExpired(token);
     }
+
+    public long getRemainingExpiration(String token) {
+        Date expiration = extractExpiration(token);
+        return expiration.getTime() - System.currentTimeMillis();
+    }
 }
