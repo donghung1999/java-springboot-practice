@@ -20,9 +20,8 @@ public class CategoryController {
 
     @GetMapping("/all")
     public List<CategoryDTO> getAllUsers(
-        @RequestParam(defaultValue = "10") int limit,
-        @RequestParam(defaultValue = "0") int offset
+        @RequestParam(defaultValue = "0") int page
     ) {
-        return this.categoryService.getAllCategory(limit, offset);
+        return this.categoryService.getAllCategory(page);
     }
 }

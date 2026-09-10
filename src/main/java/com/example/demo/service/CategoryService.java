@@ -17,15 +17,16 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<CategoryDTO> getAllCategory(int limit, int offset) {
+    public List<CategoryDTO> getAllCategory(int page) {
+        int springPage = page - 1;
         Sort sort = Sort.by(
                 Sort.Direction.fromString("asc"),
                 "name"
         );
 
         Pageable pageable = PageRequest.of(
-                offset / limit,
-                limit,
+                springPage,
+                10,
                 sort
         );
 

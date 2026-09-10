@@ -16,3 +16,5 @@ springdoc:
 jwt:
   secret: Doif7pIHt6kw/BaEKxjM6jStc+ilONDJy5y5MTMMsk8=
   expiration: 900000
+security:
+  allowed-ips: 127.0.0.1,192.168.1.10,10.0.0.5

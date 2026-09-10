@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -12,12 +13,8 @@ import java.util.Set;
 
 @Component
 public class IpWhitelistFilter extends OncePerRequestFilter {
-    private final Set<String> allowedIps = Set.of(
-            "127.0.0.1",
-            "192.168.1.10",
-            "10.0.0.1"
-    );
-
+    @Value("#{'${security.allowed-ips}'.split(',')}")
+    private Set<String> allowedIps;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
